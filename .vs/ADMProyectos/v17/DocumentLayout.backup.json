@@ -1,0 +1,410 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{ADEA490C-BA47-4001-A19F-565EB0AC9E5C}|ADMProyectos\\ADMProyectos.csproj|c:\\users\\alejo\\source\\repos\\admproyectos\\admproyectos\\menu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ADEA490C-BA47-4001-A19F-565EB0AC9E5C}|ADMProyectos\\ADMProyectos.csproj|solutionrelative:admproyectos\\menu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2CA5EF73-D30C-4287-92EE-7A271E98A9F8}|API\\API.csproj|c:\\users\\alejo\\source\\repos\\admproyectos\\api\\exceptions\\middlewareexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2CA5EF73-D30C-4287-92EE-7A271E98A9F8}|API\\API.csproj|solutionrelative:api\\exceptions\\middlewareexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B6757FBF-CB58-4FB5-82E6-4139DACD9BFA}|Application\\Application.csproj|c:\\users\\alejo\\source\\repos\\admproyectos\\application\\services\\projectproposalservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B6757FBF-CB58-4FB5-82E6-4139DACD9BFA}|Application\\Application.csproj|solutionrelative:application\\services\\projectproposalservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2CA5EF73-D30C-4287-92EE-7A271E98A9F8}|API\\API.csproj|c:\\users\\alejo\\source\\repos\\admproyectos\\api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2CA5EF73-D30C-4287-92EE-7A271E98A9F8}|API\\API.csproj|solutionrelative:api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B6757FBF-CB58-4FB5-82E6-4139DACD9BFA}|Application\\Application.csproj|c:\\users\\alejo\\source\\repos\\admproyectos\\application\\request\\projectproposalrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B6757FBF-CB58-4FB5-82E6-4139DACD9BFA}|Application\\Application.csproj|solutionrelative:application\\request\\projectproposalrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2CA5EF73-D30C-4287-92EE-7A271E98A9F8}|API\\API.csproj|c:\\users\\alejo\\source\\repos\\admproyectos\\api\\api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{2CA5EF73-D30C-4287-92EE-7A271E98A9F8}|API\\API.csproj|solutionrelative:api\\api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2CA5EF73-D30C-4287-92EE-7A271E98A9F8}|API\\API.csproj|c:\\users\\alejo\\source\\repos\\admproyectos\\api\\controllers\\projectcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2CA5EF73-D30C-4287-92EE-7A271E98A9F8}|API\\API.csproj|solutionrelative:api\\controllers\\projectcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2CA5EF73-D30C-4287-92EE-7A271E98A9F8}|API\\API.csproj|c:\\users\\alejo\\source\\repos\\admproyectos\\api\\models\\project.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2CA5EF73-D30C-4287-92EE-7A271E98A9F8}|API\\API.csproj|solutionrelative:api\\models\\project.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2CA5EF73-D30C-4287-92EE-7A271E98A9F8}|API\\API.csproj|c:\\users\\alejo\\source\\repos\\admproyectos\\api\\models\\approvalstep.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2CA5EF73-D30C-4287-92EE-7A271E98A9F8}|API\\API.csproj|solutionrelative:api\\models\\approvalstep.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2CA5EF73-D30C-4287-92EE-7A271E98A9F8}|API\\API.csproj|c:\\users\\alejo\\source\\repos\\admproyectos\\api\\models\\projectcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2CA5EF73-D30C-4287-92EE-7A271E98A9F8}|API\\API.csproj|solutionrelative:api\\models\\projectcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2CA5EF73-D30C-4287-92EE-7A271E98A9F8}|API\\API.csproj|c:\\users\\alejo\\source\\repos\\admproyectos\\api\\models\\projectshort.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2CA5EF73-D30C-4287-92EE-7A271E98A9F8}|API\\API.csproj|solutionrelative:api\\models\\projectshort.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2CA5EF73-D30C-4287-92EE-7A271E98A9F8}|API\\API.csproj|c:\\users\\alejo\\source\\repos\\admproyectos\\api\\models\\decisionstep.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2CA5EF73-D30C-4287-92EE-7A271E98A9F8}|API\\API.csproj|solutionrelative:api\\models\\decisionstep.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2CA5EF73-D30C-4287-92EE-7A271E98A9F8}|API\\API.csproj|c:\\users\\alejo\\source\\repos\\admproyectos\\api\\models\\users.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2CA5EF73-D30C-4287-92EE-7A271E98A9F8}|API\\API.csproj|solutionrelative:api\\models\\users.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2CA5EF73-D30C-4287-92EE-7A271E98A9F8}|API\\API.csproj|c:\\users\\alejo\\source\\repos\\admproyectos\\api\\models\\genericresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2CA5EF73-D30C-4287-92EE-7A271E98A9F8}|API\\API.csproj|solutionrelative:api\\models\\genericresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2CA5EF73-D30C-4287-92EE-7A271E98A9F8}|API\\API.csproj|c:\\users\\alejo\\source\\repos\\admproyectos\\api\\models\\projectupdate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2CA5EF73-D30C-4287-92EE-7A271E98A9F8}|API\\API.csproj|solutionrelative:api\\models\\projectupdate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2CA5EF73-D30C-4287-92EE-7A271E98A9F8}|API\\API.csproj|c:\\users\\alejo\\source\\repos\\admproyectos\\api\\models\\apierror.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2CA5EF73-D30C-4287-92EE-7A271E98A9F8}|API\\API.csproj|solutionrelative:api\\models\\apierror.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2CA5EF73-D30C-4287-92EE-7A271E98A9F8}|API\\API.csproj|c:\\users\\alejo\\source\\repos\\admproyectos\\api\\controllers\\informationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2CA5EF73-D30C-4287-92EE-7A271E98A9F8}|API\\API.csproj|solutionrelative:api\\controllers\\informationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B6757FBF-CB58-4FB5-82E6-4139DACD9BFA}|Application\\Application.csproj|c:\\users\\alejo\\source\\repos\\admproyectos\\application\\interfaces\\iprojectproposalservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B6757FBF-CB58-4FB5-82E6-4139DACD9BFA}|Application\\Application.csproj|solutionrelative:application\\interfaces\\iprojectproposalservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B6757FBF-CB58-4FB5-82E6-4139DACD9BFA}|Application\\Application.csproj|c:\\users\\alejo\\source\\repos\\admproyectos\\application\\services\\projectapprovalstepservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B6757FBF-CB58-4FB5-82E6-4139DACD9BFA}|Application\\Application.csproj|solutionrelative:application\\services\\projectapprovalstepservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B6757FBF-CB58-4FB5-82E6-4139DACD9BFA}|Application\\Application.csproj|c:\\users\\alejo\\source\\repos\\admproyectos\\application\\interfaces\\iprojectapprovalstepservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B6757FBF-CB58-4FB5-82E6-4139DACD9BFA}|Application\\Application.csproj|solutionrelative:application\\interfaces\\iprojectapprovalstepservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 15,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{28836128-fc2c-11d2-a433-00c04f72d18a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:131:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{e8b06f52-6d01-11d2-aa7d-00c04f990343}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MiddlewareException.cs",
+              "DocumentMoniker": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\API\\Exceptions\\MiddlewareException.cs",
+              "RelativeDocumentMoniker": "API\\Exceptions\\MiddlewareException.cs",
+              "ToolTip": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\API\\Exceptions\\MiddlewareException.cs",
+              "RelativeToolTip": "API\\Exceptions\\MiddlewareException.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-22T23:38:43.301Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ProjectProposalService.cs",
+              "DocumentMoniker": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\Application\\Services\\ProjectProposalService.cs",
+              "RelativeDocumentMoniker": "Application\\Services\\ProjectProposalService.cs",
+              "ToolTip": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\Application\\Services\\ProjectProposalService.cs",
+              "RelativeToolTip": "Application\\Services\\ProjectProposalService.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAYwC4AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-22T23:34:54.98Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\API\\Program.cs",
+              "RelativeDocumentMoniker": "API\\Program.cs",
+              "ToolTip": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\API\\Program.cs",
+              "RelativeToolTip": "API\\Program.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAB4AAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-22T23:07:24.347Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Project.cs",
+              "DocumentMoniker": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\API\\Models\\Project.cs",
+              "RelativeDocumentMoniker": "API\\Models\\Project.cs",
+              "ToolTip": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\API\\Models\\Project.cs",
+              "RelativeToolTip": "API\\Models\\Project.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-22T23:01:52.918Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ProjectProposalRequest.cs",
+              "DocumentMoniker": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\Application\\Request\\ProjectProposalRequest.cs",
+              "RelativeDocumentMoniker": "Application\\Request\\ProjectProposalRequest.cs",
+              "ToolTip": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\Application\\Request\\ProjectProposalRequest.cs",
+              "RelativeToolTip": "Application\\Request\\ProjectProposalRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-22T18:50:30.013Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Menu.cs",
+              "DocumentMoniker": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\ADMProyectos\\Menu.cs",
+              "RelativeDocumentMoniker": "ADMProyectos\\Menu.cs",
+              "ToolTip": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\ADMProyectos\\Menu.cs*",
+              "RelativeToolTip": "ADMProyectos\\Menu.cs*",
+              "ViewState": "AgIAAAQDAAAAAAAAAAAuwPsCAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-17T00:00:53.019Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ApprovalStep.cs",
+              "DocumentMoniker": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\API\\Models\\ApprovalStep.cs",
+              "RelativeDocumentMoniker": "API\\Models\\ApprovalStep.cs",
+              "ToolTip": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\API\\Models\\ApprovalStep.cs",
+              "RelativeToolTip": "API\\Models\\ApprovalStep.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-22T23:01:38.214Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ProjectShort.cs",
+              "DocumentMoniker": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\API\\Models\\ProjectShort.cs",
+              "RelativeDocumentMoniker": "API\\Models\\ProjectShort.cs",
+              "ToolTip": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\API\\Models\\ProjectShort.cs",
+              "RelativeToolTip": "API\\Models\\ProjectShort.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-22T23:00:31.174Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ProjectCreate.cs",
+              "DocumentMoniker": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\API\\Models\\ProjectCreate.cs",
+              "RelativeDocumentMoniker": "API\\Models\\ProjectCreate.cs",
+              "ToolTip": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\API\\Models\\ProjectCreate.cs",
+              "RelativeToolTip": "API\\Models\\ProjectCreate.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-22T22:59:33.172Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ProjectController.cs",
+              "DocumentMoniker": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\API\\Controllers\\ProjectController.cs",
+              "RelativeDocumentMoniker": "API\\Controllers\\ProjectController.cs",
+              "ToolTip": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\API\\Controllers\\ProjectController.cs",
+              "RelativeToolTip": "API\\Controllers\\ProjectController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAMcAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-22T22:51:15.309Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "API",
+              "DocumentMoniker": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\API\\API.csproj",
+              "RelativeDocumentMoniker": "API\\API.csproj",
+              "ToolTip": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\API\\API.csproj",
+              "RelativeToolTip": "API\\API.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-05-22T21:32:26.619Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "DecisionStep.cs",
+              "DocumentMoniker": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\API\\Models\\DecisionStep.cs",
+              "RelativeDocumentMoniker": "API\\Models\\DecisionStep.cs",
+              "ToolTip": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\API\\Models\\DecisionStep.cs",
+              "RelativeToolTip": "API\\Models\\DecisionStep.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-22T23:00:59Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Users.cs",
+              "DocumentMoniker": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\API\\Models\\Users.cs",
+              "RelativeDocumentMoniker": "API\\Models\\Users.cs",
+              "ToolTip": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\API\\Models\\Users.cs",
+              "RelativeToolTip": "API\\Models\\Users.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-22T23:01:09.448Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "ProjectUpdate.cs",
+              "DocumentMoniker": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\API\\Models\\ProjectUpdate.cs",
+              "RelativeDocumentMoniker": "API\\Models\\ProjectUpdate.cs",
+              "ToolTip": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\API\\Models\\ProjectUpdate.cs",
+              "RelativeToolTip": "API\\Models\\ProjectUpdate.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-22T22:59:52.547Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "GenericResponse.cs",
+              "DocumentMoniker": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\API\\Models\\GenericResponse.cs",
+              "RelativeDocumentMoniker": "API\\Models\\GenericResponse.cs",
+              "ToolTip": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\API\\Models\\GenericResponse.cs",
+              "RelativeToolTip": "API\\Models\\GenericResponse.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-22T22:59:10.422Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "ApiError.cs",
+              "DocumentMoniker": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\API\\Models\\ApiError.cs",
+              "RelativeDocumentMoniker": "API\\Models\\ApiError.cs",
+              "ToolTip": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\API\\Models\\ApiError.cs",
+              "RelativeToolTip": "API\\Models\\ApiError.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-22T22:57:41.078Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "InformationController.cs",
+              "DocumentMoniker": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\API\\Controllers\\InformationController.cs",
+              "RelativeDocumentMoniker": "API\\Controllers\\InformationController.cs",
+              "ToolTip": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\API\\Controllers\\InformationController.cs",
+              "RelativeToolTip": "API\\Controllers\\InformationController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-22T21:24:46.359Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "IProjectProposalService.cs",
+              "DocumentMoniker": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\Application\\Interfaces\\IProjectProposalService.cs",
+              "RelativeDocumentMoniker": "Application\\Interfaces\\IProjectProposalService.cs",
+              "ToolTip": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\Application\\Interfaces\\IProjectProposalService.cs",
+              "RelativeToolTip": "Application\\Interfaces\\IProjectProposalService.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAcwA0AAABFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-22T19:22:47.417Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "ProjectApprovalStepService.cs",
+              "DocumentMoniker": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\Application\\Services\\ProjectApprovalStepService.cs",
+              "RelativeDocumentMoniker": "Application\\Services\\ProjectApprovalStepService.cs",
+              "ToolTip": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\Application\\Services\\ProjectApprovalStepService.cs",
+              "RelativeToolTip": "Application\\Services\\ProjectApprovalStepService.cs",
+              "ViewState": "AgIAAGgAAAAAAAAAAAAqwBgAAAA/AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-20T03:47:40.6Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "IProjectApprovalStepService.cs",
+              "DocumentMoniker": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\Application\\Interfaces\\IProjectApprovalStepService.cs",
+              "RelativeDocumentMoniker": "Application\\Interfaces\\IProjectApprovalStepService.cs",
+              "ToolTip": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\Application\\Interfaces\\IProjectApprovalStepService.cs",
+              "RelativeToolTip": "Application\\Interfaces\\IProjectApprovalStepService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-22T19:26:27.545Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
