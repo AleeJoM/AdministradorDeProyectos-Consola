@@ -54,5 +54,9 @@ namespace Infrastructure.Command
             _context.ProjectApprovalStep.Update(step);
             await _context.SaveChangesAsync();
         }
+        public async Task<ApprovalStatus> GetApprovalStatusById(int id)
+        {
+            return await _context.ApprovalStatus.FindAsync(id);
+        }
     }
 }

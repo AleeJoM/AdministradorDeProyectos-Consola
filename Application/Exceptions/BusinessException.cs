@@ -1,4 +1,4 @@
-﻿namespace API.Exceptions
+﻿namespace Application.Exceptions
 {
     public class BusinessException : Exception
     {

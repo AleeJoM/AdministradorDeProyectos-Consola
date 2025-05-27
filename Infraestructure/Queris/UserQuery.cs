@@ -20,10 +20,12 @@ namespace Infrastructure.Queris
             _context = context;
         }
         public async Task<List<User>> GetAllUsers() =>
-            await _context.User.ToListAsync();
+            await _context.User.Include(u => u.ApproverRoles).ToListAsync();
         public async Task<User?> GetById(int userId)
         {
-            return await _context.User.FirstOrDefaultAsync(u => u.Id == userId);
+            return await _context.User
+                .Include(u => u.ApproverRoles)
+                .FirstOrDefaultAsync(u => u.Id == userId);
         }
         public async Task<int> GetRoleById(int id)
         {

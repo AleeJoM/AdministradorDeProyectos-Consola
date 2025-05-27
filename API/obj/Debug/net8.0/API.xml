@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>API</name>
+    </assembly>
+    <members>
+        <member name="M:ADMProyectos.API.Controllers.InformationController.GetAreas">
+            <summary>
+            Listado de áreas
+            </summary>
+        </member>
+        <member name="M:ADMProyectos.API.Controllers.InformationController.GetProjectTypes">
+            <summary>
+            Listado de tipos de proyectos
+            </summary>
+        </member>
+        <member name="M:ADMProyectos.API.Controllers.InformationController.GetRoles">
+            <summary>
+            Listado de roles de usuario
+            </summary>
+        </member>
+        <member name="M:ADMProyectos.API.Controllers.InformationController.GetApprovalStatus">
+            <summary>
+            Listado de estados para una solicitud de proyectos y pasos de aprobación
+            </summary>
+        </member>
+        <member name="M:ADMProyectos.API.Controllers.InformationController.GetUsers">
+            <summary>
+            Listado de usuarios
+            </summary>
+        </member>
+        <member name="M:ADMProyectos.API.Controllers.ProjectController.GetProjects(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Obtiene el listado de proyectos con filtros
+            </summary>
+            <param name="title">Filtro por título del proyecto</param>
+            <param name="status">Filtro por ID del estado del proyecto</param>
+            <param name="applicant">Filtro por ID del solicitante</param>
+            <param name="approvalUser">Filtro por ID del usuario aprobador</param>
+        </member>
+        <member name="M:ADMProyectos.API.Controllers.ProjectController.CreateProject(Application.Request.ProjectProposalRequest)">
+            <summary>
+            Crea una nueva propuesta de proyecto
+            </summary>
+        </member>
+        <member name="M:ADMProyectos.API.Controllers.ProjectController.MakeDecision(System.Guid,Application.Dtos.DecisionStepDto)">
+            <summary>
+            Aprobar, rechazar u observar un proyecto
+            </summary>
+        </member>
+        <member name="M:ADMProyectos.API.Controllers.ProjectController.UpdateProject(System.Guid,Application.Request.ProjectUpdate)">
+            <summary>
+            Modificar un proyecto existente
+            </summary>
+            <param name="id">ID único del proyecto</param>
+            <param name="request">Datos de actualización del proyecto</param>
+            <response code="200">Proyecto actualizado exitosamente</response>
+            <response code="404">Si el proyecto no existe</response>
+            <response code="400">Si los datos de actualización son inválidos</response>
+            <response code="409">Si el proyecto no puede ser modificado en su estado actual</response>
+        </member>
+        <member name="M:ADMProyectos.API.Controllers.ProjectController.GetProjectDetail(System.Guid)">
+            <summary>
+            Ver el detalle del proyecto
+            </summary>
+            <param name="id">ID único del proyecto</param>
+            <response code="200">Retorna el detalle del proyecto</response>
+            <response code="404">Si el proyecto no existe</response>
+            <response code="400">Si hay un error en la solicitud</response>
+        </member>
+    </members>
+</doc>

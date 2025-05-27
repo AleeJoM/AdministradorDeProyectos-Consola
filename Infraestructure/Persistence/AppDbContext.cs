@@ -21,6 +21,8 @@ namespace Infrastructure.Persistence
         public DbSet<ProjectType> ProjectType { get; set; }
         public DbSet<ApprovalStatus> ApprovalStatus { get; set; }
         public DbSet<ApproverRole> ApproverRole { get; set; }
+
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Server=DESKTOP-ALEJO;Database=ADMProyectos;Trusted_Connection=True;TrustServerCertificate=true;");

@@ -25,6 +25,39 @@ namespace Infrastructure.Queris
                 .Take(pageSize)
                 .ToListAsync();
         }
+        public async Task<List<ProjectProposal>> GetProjectsByFilters(string? title, int? status, int? applicant, int? approvalUser)
+        {
+            var query = _context.ProjectProposal.AsQueryable();
+
+            if (!string.IsNullOrEmpty(title))
+            {
+                query = query.Where(p => p.Title.Contains(title));
+            }
+
+            if (status.HasValue)
+            {
+                query = query.Where(p => p.Status == status.Value);
+            }
+
+            if (applicant.HasValue)
+            {
+                query = query.Where(p => p.CreateBy == applicant.Value);
+            }
+
+            if (approvalUser.HasValue)
+            {
+                query = query.Where(p => p.ProjectApprovalSteps.Any(step => step.ApproverUserId == approvalUser.Value));
+            }
+
+            return await query
+                .Include(p => p.Areas)
+                .Include(p => p.ProjectType)
+                .Include(p => p.ApprovalStatus)
+                .Include(p => p.User)
+                .Include(p => p.ProjectApprovalSteps)
+                .ToListAsync();
+        }
+
         public async Task<int> GetTotalProjectCount()
         {
             return await _context.ProjectProposal.CountAsync();
@@ -37,7 +70,7 @@ namespace Infrastructure.Queris
             .FirstOrDefaultAsync();
             return status;
         }
-        public async Task<List<ProjectProposal>> GetProposalsByStatus(int status)
+        public async Task<List<ProjectProposal>> GetProjectByStatus(int status)
         {
             return await _context.ProjectProposal
             .Where(p => p.Status == status)

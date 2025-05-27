@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Application.Dtos;
 using Application.Interfaces;
 using Domain.Entities;
+using Application.Exceptions;
+using Application.Validation;
 
 namespace Application.Services
 {
@@ -27,8 +29,7 @@ namespace Application.Services
             IApprovalRuleQuery approvalRuleQuery,
             IProjectApprovalStepQuery projectApprovalStepQuery,
             IProjectProposalCommand projectProposalCommand,
-            IUserRoleService userRoleService
-            )
+            IUserRoleService userRoleService)
         {
             _projectProposalQuery = projectProposalQuery;
             _projectApprovalStepCommand = projectApprovalStepCommand;
@@ -40,19 +41,18 @@ namespace Application.Services
         }
         public async Task<List<ProjectApprovalStep>> GenerateApprovalSteps(Guid projectId)
         {
+            var proposal = await _projectProposalQuery.GetProjectById(projectId);
+            if (proposal == null)
+                throw new BusinessException("No se encontró la propuesta con el ID proporcionado.");
+
             var existingSteps = await _projectApprovalStepQuery.GetStepsByProjectId(projectId);
             if (existingSteps != null && existingSteps.Any())
             {
-                Console.WriteLine("Ya existen pasos de aprobación para este proyecto.");
                 return existingSteps.ToList();
             }
 
-            var proposal = await _projectProposalQuery.GetProjectById(projectId);
-            if (proposal == null)
-                throw new Exception("No se encontró la propuesta con el ID proporcionado.");
-
             var rules = await _approvalRuleQuery.GetAll();
-            var users = await _userQuery.GetAllUsers();
+            var statusPendiente = await _projectApprovalStepCommand.GetApprovalStatusById(1);
 
             decimal amount = proposal.EstimatedAmount;
             int? area = proposal.Area;
@@ -62,7 +62,6 @@ namespace Application.Services
                 value >= min && (max <= 0 || value <= max);
 
             var steps = new List<ProjectApprovalStep>();
-
             var rulesGrouped = rules
                 .Where(r => InRange(amount, r.MinAmount, r.MaxAmount))
                 .GroupBy(r => r.StepOrder)
@@ -72,86 +71,45 @@ namespace Application.Services
             {
                 var stepOrder = group.Key;
 
-                var selectedRule =
-                    group.FirstOrDefault(r => r.Area == area && r.Type == type) ??
-                    group.FirstOrDefault(r => r.Area == area && r.Type == null) ??
-                    group.FirstOrDefault(r => r.Type == type && r.Area == null) ??
-                    group.FirstOrDefault(r => r.Area == null && r.Type == null);
+                var selectedRule = group.FirstOrDefault(r => r.Area == area && r.Type == type) ??
+                                   group.FirstOrDefault(r => r.Area == area && r.Type == null) ??
+                                   group.FirstOrDefault(r => r.Type == type && r.Area == null) ??
+                                   group.FirstOrDefault(r => r.Area == null && r.Type == null);
 
-                if (selectedRule == null)
-                    continue;
+                if (selectedRule == null) continue;
 
-                var approvers = users
-                    .Where(u => u.Role == selectedRule.ApproverRoleId)
-                    .ToList();
+                var usersWithRole = await _userQuery.GetUsersByRoleId(selectedRule.ApproverRoleId);
+                int? approverUserId = null;
+                User? approverUser = null;
 
-                Console.WriteLine($"\nReglas de aprobación: {stepOrder}");
-
-                if (selectedRule != null)
+                if (usersWithRole != null)
                 {
-                    string areaName = "Todas";
-                    string typeName = "Todos";
-
-                    if (selectedRule.Area.HasValue)
+                    var userList = usersWithRole.ToList();
+                    if (userList.Count == 1)
                     {
-                        var areaEntity = selectedRule.Areas;
-                        if (areaEntity != null)
-                            areaName = areaEntity.Name;
-                        else
-                            areaName = selectedRule.Area.Value.ToString();
-                    }
-
-                    if (selectedRule.Type.HasValue)
-                    {
-                        var typeEntity = selectedRule.ProjectType;
-                        if (typeEntity != null)
-                            typeName = typeEntity.Name;
-                        else
-                            typeName = selectedRule.Type.Value.ToString();
-                    }
-
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine($"Regla aplicada: Id {selectedRule.Id} | Área: {areaName} | Tipo: {typeName} | Rol: {selectedRule.ApproverRoleId}");
-                    Console.ResetColor();
-                }
-                else
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("⚠️ No se encontró regla válida para este StepOrder.");
-                    Console.ResetColor();
-                }
-
-                if (approvers.Any())
-                {
-                    foreach (var user in approvers)
-                    {
-                        steps.Add(new ProjectApprovalStep
-                        {
-                            Id = GenerateRandomBigIntId(),
-                            ProjectProposalId = proposal.Id,
-                            ApproverRoleId = selectedRule.ApproverRoleId,
-                            ApproverUserId = user.Id,
-                            Status = 1,
-                            StepOrder = selectedRule.StepOrder,
-                            Observations = "Pendiente"
-                        });
-                        Console.WriteLine($"Paso agregado: StepOrder {stepOrder}, Usuario asignado: {user?.Name ?? "ninguno"}");
+                        approverUserId = userList[0].Id;
+                        approverUser = userList[0];
                     }
                 }
-                else
+
+                var mainStep = new ProjectApprovalStep
                 {
-                    steps.Add(new ProjectApprovalStep
-                    {
-                        Id = GenerateRandomBigIntId(),
-                        ProjectProposalId = proposal.Id,
-                        ApproverRoleId = selectedRule.ApproverRoleId,
-                        ApproverUserId = null,
-                        Status = 1,
-                        StepOrder = selectedRule.StepOrder,
-                        Observations = "Pendiente (sin usuario asignado)"
-                    });
-                }
+                    Id = GenerateRandomBigIntId(),
+                    ProjectProposalId = proposal.Id,
+                    ProjectProposal = proposal,
+                    ApproverRoleId = selectedRule.ApproverRoleId,
+                    ApproverRole = selectedRule.ApproverRole,
+                    ApproverUserId = approverUserId,
+                    User = approverUser,
+                    Status = 1,
+                    ApprovalStatus = statusPendiente,
+                    StepOrder = stepOrder,
+                    Observations = "Pendiente de revisión",
+                    DecisionDate = null
+                };
+                steps.Add(mainStep);
             }
+
             await _projectApprovalStepCommand.SaveSteps(steps);
             return steps.OrderBy(s => s.StepOrder).ToList();
         }
@@ -175,6 +133,7 @@ namespace Application.Services
                     Message = "Proyecto no encontrado"
                 };
             }
+
             var steps = await _projectApprovalStepQuery.GetStepsByProjectId(projectId);
             var firstStep = steps.FirstOrDefault();
             if (firstStep == null)
@@ -187,8 +146,10 @@ namespace Application.Services
                     Message = "No se encontraron pasos de aprobación"
                 };
             }
+
             var assignedUserId = firstStep.ApproverUserId;
             string userName = "No asignado";
+
             if (assignedUserId.HasValue)
             {
                 var user = await _userQuery.GetById(assignedUserId.Value);
@@ -205,13 +166,15 @@ namespace Application.Services
                     userName = string.Join(", ", usersWithRole.Select(u => u.Name));
                 }
             }
-            string roleName = (await _userRoleService.GetRoleById(firstStep.ApproverRoleId)).ToString();
+
+            var roleDetails = await _userRoleService.GetRoleDetailsById(firstStep.ApproverRoleId);
+
             return new ProjectStatusDto
             {
                 UserId = assignedUserId ?? 0,
                 UserName = userName,
                 Decision = "Pendiente de aprobación",
-                Message = $"La propuesta requiere aprobación de {roleName}"
+                Message = $"La propuesta requiere aprobación de {roleDetails.Name}"
             };
         }
         public async Task UpdateObservation(BigInteger stepId, string decision, string userName)
@@ -219,7 +182,15 @@ namespace Application.Services
             var step = await _projectApprovalStepCommand.GetProjectStepById(stepId);
             if (step != null)
             {
-                step.Observations = $"Paso iniciado el {DateTime.Now:dd/MM/yyyy HH:mm}. Estado: {decision}. Responsable(s): {userName}";
+                var assignedUser = await _userQuery.GetById(step.ApproverUserId ?? 0);
+                var userRoleId = await _userRoleService.GetRoleById(assignedUser?.Id ?? 0);
+                var roleDetails = await _userRoleService.GetRoleDetailsById(userRoleId);
+
+                step.Observations = $"Paso iniciado el {DateTime.Now:dd/MM/yyyy HH:mm}. " +
+                                  $"Estado: {decision}. " +
+                                  $"Responsable(s): {assignedUser?.Name ?? "No asignado"} " +
+                                  $"(Rol: {roleDetails?.Name ?? "Desconocido"})";
+
                 await _projectApprovalStepCommand.UpdateStep(step);
             }
         }
@@ -227,7 +198,7 @@ namespace Application.Services
         {
             var observations = await _projectApprovalStepCommand.GetProjectStepObservationsById(stepId);
             if (observations == null)
-                Console.WriteLine("Paso de aprobación no encontrado");
+                throw new BusinessException("Paso de aprobación no encontrado");
 
             return observations ?? "Sin observaciones registradas.";
         }
@@ -235,32 +206,86 @@ namespace Application.Services
         {
             var step = await _projectApprovalStepQuery.GetStepByProposalAndUser(proposalId, userId);
             var allSteps = await _projectApprovalStepQuery.GetStepsByProjectId(proposalId);
+            var currentUser = await _userQuery.GetById(userId);
 
             if (step == null)
             {
-                step = allSteps.FirstOrDefault(s => s.Status == 4 && s.ApproverUserId == userId);
-            }
-            if (step == null || (step.Status != 1 && step.Status != 4))
-            {
-                throw new Exception("No tiene permisos para aprobar esta propuesta o ya fue procesada.");
+                var processedStep = allSteps.FirstOrDefault(s =>
+                    s.ApproverRoleId == currentUser?.Role &&
+                    (s.Status == 2 || s.Status == 3));
+
+                if (processedStep != null)
+                    throw new BusinessException($"Este paso ya fue procesado por {processedStep.User?.Name ?? "otro usuario"} con el mismo rol.");
+
+                throw new BusinessException("No tiene permisos para procesar este paso o ya fue procesado.");
             }
 
             switch (char.ToUpper(decision))
             {
                 case 'A':
-                    step.Status = 2;
+                    step.Status = 2; // Aprobado
+                    step.DecisionDate = DateTime.Now;
+                    step.ApproverUserId = userId;
+                    step.Observations = $"Aprobado por {currentUser?.Name}";
+
+                    var relatedSteps = allSteps.Where(s =>
+                        s.StepOrder == step.StepOrder &&
+                        s.ApproverRoleId == step.ApproverRoleId &&
+                        s.Id != step.Id).ToList();
+
+                    foreach (var relatedStep in relatedSteps)
+                    {
+                        relatedStep.Status = 2;
+                        relatedStep.DecisionDate = DateTime.Now;
+                        relatedStep.Observations = $"Este paso fue aprobado automáticamente porque {step.User?.Name} del mismo rol ('{step.ApproverRole?.Name}') lo aprobó.";
+                        await _projectApprovalStepCommand.UpdateStep(relatedStep);
+                    }
                     break;
+
                 case 'R':
-                    step.Status = 3;
+                    step.Status = 3; // Rechazado
+                    step.DecisionDate = DateTime.Now;
+                    step.ApproverUserId = userId;
+                    step.Observations = $"Rechazado por {currentUser?.Name}";
+
+                    var rejectedRelatedSteps = allSteps.Where(s =>
+                        s.StepOrder == step.StepOrder &&
+                        s.ApproverRoleId == step.ApproverRoleId &&
+                        s.Id != step.Id).ToList();
+
+                    foreach (var relatedStep in rejectedRelatedSteps)
+                    {
+                        relatedStep.Status = 3;
+                        relatedStep.DecisionDate = DateTime.Now;
+                        relatedStep.Observations = $"Rechazado automáticamente. El paso fue rechazado por {step.User?.Name ?? "otro usuario"} del mismo rol.";
+                        await _projectApprovalStepCommand.UpdateStep(relatedStep);
+                    }
                     break;
+
                 case 'O':
-                    step.Status = 4;
+                    step.Status = 4; // Observado
+                    step.DecisionDate = DateTime.Now;
+                    step.ApproverUserId = userId;
+                    step.Observations = $"Observado por {currentUser?.Name}";
+
+                    var observedRelatedSteps = allSteps.Where(s =>
+                        s.StepOrder == step.StepOrder &&
+                        s.ApproverRoleId == step.ApproverRoleId &&
+                        s.Id != step.Id).ToList();
+
+                    foreach (var relatedStep in observedRelatedSteps)
+                    {
+                        relatedStep.Status = 4;
+                        relatedStep.DecisionDate = DateTime.Now;
+                        relatedStep.Observations = $"Observado automáticamente. El paso fue observado por {step.User?.Name ?? "otro usuario"} del mismo rol.";
+                        await _projectApprovalStepCommand.UpdateStep(relatedStep);
+                    }
                     break;
+
                 default:
-                    throw new ArgumentException("Opción inválida.");
+                    throw new MyInvalidDataException("Opción inválida.");
             }
 
-            step.DecisionDate = DateTime.Now;
             await _projectApprovalStepCommand.UpdateStep(step);
 
             if (allSteps.Any(s => s.Status == 3))

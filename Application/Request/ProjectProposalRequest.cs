@@ -19,14 +19,17 @@ namespace Application.Request
 
         [Required(ErrorMessage = "El monto estimado es obligatorio")]
         [Range(0.01, double.MaxValue, ErrorMessage = "El monto debe ser mayor que cero")]
-        public decimal EstimatedAmount { get; set; }
+        public decimal Amount { get; set; }
 
         [Required(ErrorMessage = "La duración estimada es obligatoria")]
         [Range(1, int.MaxValue, ErrorMessage = "La duración debe ser mayor que cero")]
-        public int EstimatedDuration { get; set; }
+        public int Duration { get; set; }
 
         [Required(ErrorMessage = "El área es obligatoria")]
         public int Area { get; set; }
+
+        [Required(ErrorMessage = "El usuario es obligatorio")]
+        public int User { get; set; }
 
         [Required(ErrorMessage = "El tipo es obligatorio")]
         public int Type { get; set; }

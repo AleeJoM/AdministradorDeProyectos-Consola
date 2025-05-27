@@ -326,10 +326,10 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("EstimatedAmount")
+                    b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("EstimatedDuration")
+                    b.Property<int>("Duration")
                         .HasColumnType("int");
 
                     b.Property<int>("Status")

@@ -29,7 +29,12 @@ namespace Infrastructure.Queris
         public async Task<List<ProjectApprovalStep>> GetStepsByProjectId(Guid projectProposalId)
         {
             return await _context.ProjectApprovalStep
+                .Include(p => p.User)
+                .Include(p => p.ApproverRole)
+                .Include(p => p.ApprovalStatus)
+                .Include(p => p.ProjectProposal)
                 .Where(p => p.ProjectProposalId == projectProposalId)
+                .OrderBy(p => p.StepOrder)
                 .ToListAsync();
         }
 
@@ -71,10 +76,31 @@ namespace Infrastructure.Queris
         }
         public async Task<ProjectApprovalStep> GetStepByProposalAndUser(Guid proposalId, int userId)
         {
-            return await _context.ProjectApprovalStep
+            var userRole = await _context.User
+                .Where(u => u.Id == userId)
+                .Select(u => u.Role)
+                .FirstOrDefaultAsync();
+
+            var step = await _context.ProjectApprovalStep
+                .Include(p => p.User)
+                .Include(p => p.ApproverRole)
                 .FirstOrDefaultAsync(s => s.ProjectProposalId == proposalId
-                && s.ApproverUserId == userId
-                && s.Status == 1);
+                    && s.ApproverRoleId == userRole
+                    && (s.Status == 1 || s.Status == 4));
+
+            if (step == null)
+                return null;
+
+            var otherUserProcessed = await _context.ProjectApprovalStep
+                .AnyAsync(s => s.ProjectProposalId == proposalId
+                    && s.StepOrder == step.StepOrder
+                    && s.ApproverRoleId == step.ApproverRoleId
+                    && (s.Status == 2 || s.Status == 3));
+
+            if (otherUserProcessed)
+                return null;
+
+            return step;
         }
     }
 }

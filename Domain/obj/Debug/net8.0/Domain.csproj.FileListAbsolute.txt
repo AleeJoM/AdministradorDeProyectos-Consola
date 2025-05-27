@@ -5,6 +5,7 @@ C:\Users\alejo\source\repos\ADMProyectos\Domain\obj\Debug\net8.0\Domain.Generate
 C:\Users\alejo\source\repos\ADMProyectos\Domain\obj\Debug\net8.0\Domain.AssemblyInfoInputs.cache
 C:\Users\alejo\source\repos\ADMProyectos\Domain\obj\Debug\net8.0\Domain.AssemblyInfo.cs
 C:\Users\alejo\source\repos\ADMProyectos\Domain\obj\Debug\net8.0\Domain.csproj.CoreCompileInputs.cache
+C:\Users\alejo\source\repos\ADMProyectos\Domain\obj\Debug\net8.0\Domain.sourcelink.json
 C:\Users\alejo\source\repos\ADMProyectos\Domain\obj\Debug\net8.0\Domain.dll
 C:\Users\alejo\source\repos\ADMProyectos\Domain\obj\Debug\net8.0\refint\Domain.dll
 C:\Users\alejo\source\repos\ADMProyectos\Domain\obj\Debug\net8.0\Domain.pdb

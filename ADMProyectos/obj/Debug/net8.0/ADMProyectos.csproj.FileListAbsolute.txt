@@ -18,6 +18,7 @@ C:\Users\alejo\source\repos\ADMProyectos\ADMProyectos\bin\Debug\net8.0\Microsoft
 C:\Users\alejo\source\repos\ADMProyectos\ADMProyectos\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
 C:\Users\alejo\source\repos\ADMProyectos\ADMProyectos\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
 C:\Users\alejo\source\repos\ADMProyectos\ADMProyectos\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\alejo\source\repos\ADMProyectos\ADMProyectos\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.InMemory.dll
 C:\Users\alejo\source\repos\ADMProyectos\ADMProyectos\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
 C:\Users\alejo\source\repos\ADMProyectos\ADMProyectos\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.SqlServer.dll
 C:\Users\alejo\source\repos\ADMProyectos\ADMProyectos\bin\Debug\net8.0\Microsoft.Extensions.Caching.Abstractions.dll
@@ -150,6 +151,7 @@ C:\Users\alejo\source\repos\ADMProyectos\ADMProyectos\obj\Debug\net8.0\ADMProyec
 C:\Users\alejo\source\repos\ADMProyectos\ADMProyectos\obj\Debug\net8.0\ADMProyectos.AssemblyInfoInputs.cache
 C:\Users\alejo\source\repos\ADMProyectos\ADMProyectos\obj\Debug\net8.0\ADMProyectos.AssemblyInfo.cs
 C:\Users\alejo\source\repos\ADMProyectos\ADMProyectos\obj\Debug\net8.0\ADMProyectos.csproj.CoreCompileInputs.cache
+C:\Users\alejo\source\repos\ADMProyectos\ADMProyectos\obj\Debug\net8.0\ADMProyectos.sourcelink.json
 C:\Users\alejo\source\repos\ADMProyectos\ADMProyectos\obj\Debug\net8.0\ADMProye.AA4E0C0A.Up2Date
 C:\Users\alejo\source\repos\ADMProyectos\ADMProyectos\obj\Debug\net8.0\ADMProyectos.dll
 C:\Users\alejo\source\repos\ADMProyectos\ADMProyectos\obj\Debug\net8.0\refint\ADMProyectos.dll

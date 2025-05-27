@@ -6,9 +6,14 @@ using ADMProyectos;
 using Application.Services;
 using Infrastructure.Queris;
 using Application.Mapper;
+using Microsoft.EntityFrameworkCore;
 async Task Main()
 {
-    var dbContext = new AppDbContext();
+    var options = new DbContextOptionsBuilder<AppDbContext>()
+        .UseSqlServer(@"Server=DESKTOP-ALEJO;Database=ADMProyectos;Trusted_Connection=True;TrustServerCertificate=true;")
+        .Options;
+
+    var dbContext = new AppDbContext(options);
 
     var serviceProvider = ConfigureServices(dbContext);
 
@@ -24,6 +29,7 @@ IServiceProvider ConfigureServices(AppDbContext dbContext)
 
     services.AddSingleton(dbContext);
 
+    services.AddSingleton<IApproverRoleQuery, ApproverRoleQuery>();
     services.AddSingleton<IProjectProposalQuery, ProjectProposalQuery>();
     services.AddSingleton<IUserQuery, UserQuery>();
     services.AddSingleton<IAreaQuery, AreaQuery>();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Dtos;
 using Application.Interfaces;
 using Application.Request;
 using Application.Services;
@@ -10,6 +11,8 @@ using Domain.Entities;
 using Infrastructure.Command;
 using Infrastructure.Queris;
 using Microsoft.Identity.Client;
+using Application.Validation;
+using Application.Exceptions;
 
 namespace ADMProyectos
 {
@@ -185,6 +188,36 @@ namespace ADMProyectos
                 Console.WriteLine("Ingrese un número entero válido.");
             }
 
+            try
+            {
+                Application.Validation.ValidationUtils.ThrowIfNullOrEmpty(title, "Título");
+                Application.Validation.ValidationUtils.ThrowIfNullOrEmpty(description, "Descripción");
+            }
+            catch (Application.Exceptions.MyInvalidDataException ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"\nError de validación: {ex.Message}");
+                Console.ResetColor();
+                Console.WriteLine("\nPresione una tecla para continuar...");
+                Console.ReadKey();
+                return;
+            }
+
+            try
+            {
+                Application.Validation.ValidationUtils.ThrowIfNegative(amount, "Monto estimado");
+                Application.Validation.ValidationUtils.ThrowIfOutOfRange(duration, 1, int.MaxValue, "Duración");
+            }
+            catch (Application.Exceptions.MyInvalidDataException ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"\nError de validación: {ex.Message}");
+                Console.ResetColor();
+                Console.WriteLine("\nPresione una tecla para continuar...");
+                Console.ReadKey();
+                return;
+            }
+
             Console.WriteLine("Seleccione el usuario que desea proponer el Proyecto:");
             var users = await userQuery.GetAllUsers();
             foreach (var user in users)
@@ -208,8 +241,8 @@ namespace ADMProyectos
                 Description = description,
                 Area = area,
                 Type = type,
-                EstimatedAmount = amount,
-                EstimatedDuration = duration
+                Amount = amount,
+                Duration = duration
             };
 
             var newProposal = await projectProposalService.InsertProject(proposal, selectedUserId);
@@ -473,82 +506,41 @@ namespace ADMProyectos
                     Console.Write("\nIngrese un comentario (opcional): ");
                     string comment = Console.ReadLine() ?? "";
 
+                    int newStatus = decision switch
+                    {
+                        'A' => 2,
+                        'R' => 3,
+                        'O' => 4,
+                        _ => 1
+                    };
+
+                    var decisionStep = new DecisionStepDto
+                    {
+                        Id = (long)currentActiveStep.Id,
+                        User = selectedUserId,
+                        Status = newStatus,
+                        Observation = comment
+                    };
+
                     try
                     {
-                        int newStatus;
-                        switch (decision)
-                        {
-                            case 'A':
-                                newStatus = 2;
-                                break;
-                            case 'R':
-                                newStatus = 3;
-                                break;
-                            case 'O':
-                                newStatus = 4;
-                                break;
-                            default:
-                                newStatus = 1;
-                                break;
-                        }
-
-                        if (newStatus == 2)
-                        {
-                            currentActiveStep.ApproverUserId = selectedUserId;
-                            currentActiveStep.Status = 2;
-                            currentActiveStep.Observations = comment;
-                            currentActiveStep.DecisionDate = DateTime.Now;
-
-                            await projectApprovalStepCommand.UpdateStep(currentActiveStep);
-
-                            var duplicateSteps = allSteps
-                                .Where(s =>
-                                    s.StepOrder == currentActiveStep.StepOrder &&
-                                    s.ApproverRoleId == currentActiveStep.ApproverRoleId &&
-                                    s.Id != currentActiveStep.Id &&
-                                    s.Status == 1)
-                                .ToList();
-
-                            foreach (var duplicate in duplicateSteps)
-                            {
-                                duplicate.Status = 2;
-                                duplicate.ApproverUserId = null;
-                                duplicate.Observations = "Aprobado automáticamente porque otro usuario del mismo rol ya tomó acción.";
-                                duplicate.DecisionDate = DateTime.Now;
-                                await projectApprovalStepCommand.UpdateStep(duplicate);
-                            }
-                        }
-                        else if (newStatus == 3 || newStatus == 4)
-                        {
-                            currentActiveStep.ApproverUserId = selectedUserId;
-                            currentActiveStep.Status = newStatus;
-                            currentActiveStep.Observations = comment;
-                            currentActiveStep.DecisionDate = DateTime.Now;
-                            await projectApprovalStepCommand.UpdateStep(currentActiveStep);
-                        }
+                        await projectProposalService.ProcessDecision(selectedProposal.Id, decisionStep);
 
                         if (newStatus == 3)
                         {
-                            selectedProposal.Status = 3;
-                            await projectProposalService.UpdateProject(selectedProposal);
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("\nLa propuesta ha sido RECHAZADA.");
                         }
                         else if (newStatus == 4)
                         {
-                            selectedProposal.Status = 4;
-                            await projectProposalService.UpdateProject(selectedProposal);
                             Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine("\nLa propuesta ha sido OBSERVADA y devuelta para revisión.");
                         }
                         else if (newStatus == 2)
                         {
                             var remainingSteps = allSteps.Any(s => s.Status == 1);
-
                             if (!remainingSteps)
                             {
-                                selectedProposal.Status = 2;
-                                await projectProposalService.UpdateProject(selectedProposal);
                                 Console.ForegroundColor = ConsoleColor.Green;
                                 Console.WriteLine("\n¡La propuesta ha sido APROBADA!");
                             }
@@ -559,12 +551,25 @@ namespace ADMProyectos
                             }
                         }
                     }
+                    catch (Application.Exceptions.MyInvalidDataException ex)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"\nError de validación: {ex.Message}");
+                    }
+                    catch (BusinessException ex)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine($"\nError de negocio: {ex.Message}");
+                    }
+                    catch (ValidationException ex)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"\nError de validación: {ex.Message}");
+                    }
                     catch (Exception ex)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine($"\nError: {ex.Message}");
-                        if (ex.InnerException != null)
-                            Console.WriteLine($"Detalle interno: {ex.InnerException.Message}");
+                        Console.WriteLine($"\nError inesperado: {ex.Message}");
                     }
                     finally
                     {
@@ -583,10 +588,12 @@ namespace ADMProyectos
                 }
             }
         }
-        private async Task UpdateProject(IProjectProposalService projectProposalService,
+        private async Task UpdateProject(
+            IProjectProposalService projectProposalService,
             IProjectProposalQuery projectProposalQuery,
             IAreaQuery areaQuery,
-            IProjectTypeQuery projectTypeQuery)
+            IProjectTypeQuery projectTypeQuery
+            )
         {
             while (true)
             {
@@ -649,66 +656,62 @@ namespace ADMProyectos
                     continue;
                 }
 
-                Console.Write($"Nuevo título (actual: {project.Title}): ");
+                var updateRequest = new ProjectUpdate();
+
+                Console.Write($"Nuevo título (actual: {project.Title}, presione Enter para mantener): ");
                 var newTitle = Console.ReadLine();
-                if (!string.IsNullOrWhiteSpace(newTitle)) project.Title = newTitle;
+                if (!string.IsNullOrWhiteSpace(newTitle)) updateRequest.Title = newTitle;
 
-                Console.Write($"Nueva descripción (actual: {project.Description}): ");
+                Console.Write($"Nueva descripción (actual: {project.Description}, presione Enter para mantener): ");
                 var newDescription = Console.ReadLine();
-                if (!string.IsNullOrWhiteSpace(newDescription)) project.Description = newDescription;
+                if (!string.IsNullOrWhiteSpace(newDescription)) updateRequest.Description = newDescription;
 
-                Console.Write($"Nuevo monto estimado (actual: {project.EstimatedAmount}): ");
-                if (decimal.TryParse(Console.ReadLine(), out decimal newAmount)) project.EstimatedAmount = newAmount;
-
-                Console.Write($"Nueva duración (días, actual: {project.EstimatedDuration}): ");
-                if (int.TryParse(Console.ReadLine(), out int newDuration)) project.EstimatedDuration = newDuration;
-
-                var areas = await areaQuery.GetAllAreas();
-                Console.WriteLine("\nÁreas disponibles:");
-                for (int i = 0; i < areas.Count; i++)
+                Console.Write($"Nueva duración en días (actual: {project.EstimatedDuration}, presione Enter para mantener): ");
+                var durationInput = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(durationInput) && int.TryParse(durationInput, out int newDuration))
                 {
-                    Console.WriteLine($"{i + 1}. {areas[i].Name}");
+                    updateRequest.Duration = newDuration;
                 }
 
-                int areaSelection;
-                while (true)
+                try
                 {
-                    Console.Write("Seleccione un nuevo área (número): ");
-                    if (int.TryParse(Console.ReadLine(), out areaSelection) && areaSelection >= 1 && areaSelection <= areas.Count)
-                    {
-                        project.Area = areas[areaSelection - 1].Id;
-                        break;
-                    }
+                    var updated = await projectProposalService.UpdateProject(selectedProposal.Id, updateRequest);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("\nProyecto actualizado exitosamente.");
 
-                    Console.WriteLine("Área inválida. Intente nuevamente.");
+                    if (!string.IsNullOrWhiteSpace(updateRequest.Title))
+                        Console.WriteLine($"Título actualizado a: {updated.Title}");
+                    if (!string.IsNullOrWhiteSpace(updateRequest.Description))
+                        Console.WriteLine($"Descripción actualizada a: {updated.Description}");
+                    if (updateRequest.Duration > 0)
+                        Console.WriteLine($"Duración actualizada a: {updated.Duration} días");
                 }
-
-                var types = await projectTypeQuery.GetAllType();
-                Console.WriteLine("\nTipos disponibles:");
-                for (int i = 0; i < types.Count; i++)
+                catch (Application.Exceptions.MyInvalidDataException ex)
                 {
-                    Console.WriteLine($"{i + 1}. {types[i].Name}");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"\nError de validación: {ex.Message}");
                 }
-
-                int typeSelection;
-                while (true)
+                catch (BusinessException ex)
                 {
-                    Console.Write("Seleccione un nuevo tipo (número): ");
-                    if (int.TryParse(Console.ReadLine(), out typeSelection) && typeSelection >= 1 && typeSelection <= types.Count)
-                    {
-                        project.Type = types[typeSelection - 1].Id;
-                        break;
-                    }
-
-                    Console.WriteLine("Tipo inválido. Intente nuevamente.");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine($"\nError de negocio: {ex.Message}");
                 }
-
-                var updated = await projectProposalService.UpdateProject(project);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("\nProyecto actualizado exitosamente.");
-                Console.ResetColor();
-                Console.WriteLine("\nPresione una tecla para continuar...");
-                Console.ReadKey();
+                catch (ValidationException ex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"\nError de validación: {ex.Message}");
+                }
+                catch (Exception ex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"\nError inesperado: {ex.Message}");
+                }
+                finally
+                {
+                    Console.ResetColor();
+                    Console.WriteLine("\nPresione una tecla para continuar...");
+                    Console.ReadKey();
+                }
             }
         }
         private async Task DeleteProject(IProjectProposalCommand projectProposalCommand, IProjectProposalQuery projectProposalQuery)
@@ -778,10 +781,25 @@ namespace ADMProyectos
                         Console.WriteLine("No se pudo eliminar el proyecto.");
                     }
                 }
+                catch (Application.Exceptions.MyInvalidDataException ex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"\nError de validación: {ex.Message}");
+                }
+                catch (BusinessException ex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine($"\nError de negocio: {ex.Message}");
+                }
+                catch (ValidationException ex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"\nError de validación: {ex.Message}");
+                }
                 catch (Exception ex)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"Error: {ex.Message}");
+                    Console.WriteLine($"\nError inesperado: {ex.Message}");
                 }
                 finally
                 {

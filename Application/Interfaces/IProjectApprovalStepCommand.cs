@@ -16,5 +16,6 @@ namespace Application.Interfaces
         Task<ProjectApprovalStep> GetProjectStepById(BigInteger stepId);
         Task<string> GetProjectStepObservationsById(BigInteger stepId);
         Task UpdateStep(ProjectApprovalStep step);
+        Task<ApprovalStatus> GetApprovalStatusById(int id);
     }
 }
