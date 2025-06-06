@@ -12,7 +12,8 @@ namespace Application.Interfaces
         Task<ProjectProposal> CreateProposal(ProjectProposal Project);
         Task<ProjectProposal> UpdateProposal(ProjectProposal Project);
         Task<bool> DeleteProposal(Guid projectId);
-        Task<ProjectProposal> FinalizeProposal(Guid projectId);
+        Task<ProjectProposal> FinalizeProposal(Guid projectId);        
         Task<ProjectProposal> UpdateProposalStatus(Guid projectId, string decision);
+        Task<ITransaction> BeginTransactionAsync();
     }
 }

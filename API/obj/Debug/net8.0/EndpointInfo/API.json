@@ -456,6 +456,12 @@
         "additionalProperties": false
       },
       "DecisionStepDto": {
+        "required": [
+          "id",
+          "observation",
+          "status",
+          "user"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -463,16 +469,21 @@
             "format": "int64"
           },
           "user": {
+            "maximum": 2147483647,
+            "minimum": 1,
             "type": "integer",
             "format": "int32"
           },
           "status": {
+            "maximum": 4,
+            "minimum": 1,
             "type": "integer",
             "format": "int32"
           },
           "observation": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 500,
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -583,45 +594,52 @@
       "ProjectProposalRequest": {
         "required": [
           "amount",
-          "area",
           "description",
           "duration",
           "title",
-          "type",
           "user"
         ],
         "type": "object",
         "properties": {
           "title": {
-            "maxLength": 100,
+            "maxLength": 200,
             "minLength": 3,
             "type": "string"
           },
           "description": {
             "maxLength": 1000,
-            "minLength": 0,
+            "minLength": 10,
             "type": "string"
           },
           "amount": {
+            "maximum": 10000000,
             "minimum": 0,01,
             "type": "number",
             "format": "double"
           },
           "duration": {
-            "maximum": 2147483647,
+            "maximum": 3650,
             "minimum": 1,
             "type": "integer",
             "format": "int32"
           },
           "area": {
+            "maximum": 4,
+            "minimum": 1,
             "type": "integer",
-            "format": "int32"
-          },
-          "user": {
-            "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "type": {
+            "maximum": 4,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "user": {
+            "maximum": 2147483647,
+            "minimum": 1,
             "type": "integer",
             "format": "int32"
           }
@@ -684,8 +702,8 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "nullable": true
+            "type": "integer",
+            "format": "int64"
           },
           "stepOrder": {
             "type": "integer",

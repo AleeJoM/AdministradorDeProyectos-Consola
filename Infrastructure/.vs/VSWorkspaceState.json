@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\bin",
+    "\\bin\\Debug",
+    "\\bin\\Release",
+    "\\Command",
+    "\\Persistence"
+  ],
+  "SelectedNode": "\\Persistence\\AppDbContextFactory.cs",
+  "PreviewInSolutionExplorer": false
+}

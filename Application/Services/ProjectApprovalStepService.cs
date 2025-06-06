@@ -41,9 +41,8 @@ namespace Application.Services
         }
         public async Task<List<ProjectApprovalStep>> GenerateApprovalSteps(Guid projectId)
         {
-            var proposal = await _projectProposalQuery.GetProjectById(projectId);
-            if (proposal == null)
-                throw new BusinessException("No se encontró la propuesta con el ID proporcionado.");
+            var proposal = await _projectProposalQuery.GetProjectById(projectId);            if (proposal == null)
+                throw new ProjectNotFoundException($"No se encontró la propuesta con el ID {projectId}.");
 
             var existingSteps = await _projectApprovalStepQuery.GetStepsByProjectId(projectId);
             if (existingSteps != null && existingSteps.Any())
@@ -90,11 +89,8 @@ namespace Application.Services
                         approverUserId = userList[0].Id;
                         approverUser = userList[0];
                     }
-                }
-
-                var mainStep = new ProjectApprovalStep
+                }                var mainStep = new ProjectApprovalStep
                 {
-                    Id = GenerateRandomBigIntId(),
                     ProjectProposalId = proposal.Id,
                     ProjectProposal = proposal,
                     ApproverRoleId = selectedRule.ApproverRoleId,
@@ -112,13 +108,6 @@ namespace Application.Services
 
             await _projectApprovalStepCommand.SaveSteps(steps);
             return steps.OrderBy(s => s.StepOrder).ToList();
-        }
-        private long GenerateRandomBigIntId()
-        {
-            var buffer = new byte[8];
-            RandomNumberGenerator.Fill(buffer);
-            long value = BitConverter.ToInt64(buffer, 0);
-            return Math.Abs(value);
         }
         public async Task<ProjectStatusDto> NotifyUsers(Guid projectId)
         {
@@ -186,19 +175,19 @@ namespace Application.Services
                 var userRoleId = await _userRoleService.GetRoleById(assignedUser?.Id ?? 0);
                 var roleDetails = await _userRoleService.GetRoleDetailsById(userRoleId);
 
-                step.Observations = $"Paso iniciado el {DateTime.Now:dd/MM/yyyy HH:mm}. " +
-                                  $"Estado: {decision}. " +
-                                  $"Responsable(s): {assignedUser?.Name ?? "No asignado"} " +
-                                  $"(Rol: {roleDetails?.Name ?? "Desconocido"})";
+                step.Observations = 
+                    $"Paso iniciado el {DateTime.Now:dd/MM/yyyy HH:mm}. " +
+                    $"Estado: {decision}. " +
+                    $"Responsable(s): {assignedUser?.Name ?? "No asignado"} " +
+                    $"(Rol: {roleDetails?.Name ?? "Desconocido"})";
 
                 await _projectApprovalStepCommand.UpdateStep(step);
             }
         }
         public async Task<string> GetObservation(BigInteger stepId)
-        {
-            var observations = await _projectApprovalStepCommand.GetProjectStepObservationsById(stepId);
+        {            var observations = await _projectApprovalStepCommand.GetProjectStepObservationsById(stepId);
             if (observations == null)
-                throw new BusinessException("Paso de aprobación no encontrado");
+                throw new ApprovalStepNotFoundException((int)stepId);
 
             return observations ?? "Sin observaciones registradas.";
         }
@@ -280,19 +269,19 @@ namespace Application.Services
                         relatedStep.Observations = $"Observado automáticamente. El paso fue observado por {step.User?.Name ?? "otro usuario"} del mismo rol.";
                         await _projectApprovalStepCommand.UpdateStep(relatedStep);
                     }
-                    break;
-
+                    break;                
                 default:
-                    throw new MyInvalidDataException("Opción inválida.");
+                    throw new InvalidProjectStateException("Opción de decisión inválida. Use 'A' para aprobar, 'R' para rechazar, 'O' para observar.");
             }
 
             await _projectApprovalStepCommand.UpdateStep(step);
+            var updatedSteps = await _projectApprovalStepQuery.GetStepsByProjectId(proposalId);
 
-            if (allSteps.Any(s => s.Status == 3))
+            if (updatedSteps.Any(s => s.Status == 3))
             {
                 await _projectProposalCommand.UpdateProposalStatus(proposalId, "Rechazado");
             }
-            else if (allSteps.All(s => s.Status == 2))
+            else if (updatedSteps.All(s => s.Status == 2))
             {
                 await _projectProposalCommand.UpdateProposalStatus(proposalId, "Aprobado");
             }

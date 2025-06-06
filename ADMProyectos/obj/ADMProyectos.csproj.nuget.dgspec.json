@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\ADMProyectos\\ADMProyectos.csproj": {}
+    "C:\\Users\\alejo\\Desktop\\ADMProyectos\\ADMProyectos\\ADMProyectos.csproj": {}
   },
   "projects": {
-    "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\ADMProyectos\\ADMProyectos.csproj": {
+    "C:\\Users\\alejo\\Desktop\\ADMProyectos\\ADMProyectos\\ADMProyectos.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\ADMProyectos\\ADMProyectos.csproj",
+        "projectUniqueName": "C:\\Users\\alejo\\Desktop\\ADMProyectos\\ADMProyectos\\ADMProyectos.csproj",
         "projectName": "ADMProyectos",
-        "projectPath": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\ADMProyectos\\ADMProyectos.csproj",
+        "projectPath": "C:\\Users\\alejo\\Desktop\\ADMProyectos\\ADMProyectos\\ADMProyectos.csproj",
         "packagesPath": "C:\\Users\\alejo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\ADMProyectos\\obj\\",
+        "outputPath": "C:\\Users\\alejo\\Desktop\\ADMProyectos\\ADMProyectos\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -32,8 +32,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\Infraestructure\\Infrastructure.csproj": {
-                "projectPath": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\Infraestructure\\Infrastructure.csproj"
+              "C:\\Users\\alejo\\Desktop\\ADMProyectos\\Infrastructure\\Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\alejo\\Desktop\\ADMProyectos\\Infrastructure\\Infrastructure.csproj"
               }
             }
           }
@@ -58,7 +58,7 @@
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[9.0.4, )"
+              "version": "[9.0.5, )"
             },
             "Microsoft.EntityFrameworkCore.InMemory": {
               "target": "Package",
@@ -85,14 +85,14 @@
         }
       }
     },
-    "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\Application\\Application.csproj": {
+    "C:\\Users\\alejo\\Desktop\\ADMProyectos\\Application\\Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\Application\\Application.csproj",
+        "projectUniqueName": "C:\\Users\\alejo\\Desktop\\ADMProyectos\\Application\\Application.csproj",
         "projectName": "Application",
-        "projectPath": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\Application\\Application.csproj",
+        "projectPath": "C:\\Users\\alejo\\Desktop\\ADMProyectos\\Application\\Application.csproj",
         "packagesPath": "C:\\Users\\alejo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\Application\\obj\\",
+        "outputPath": "C:\\Users\\alejo\\Desktop\\ADMProyectos\\Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -113,8 +113,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\Domain\\Domain.csproj"
+              "C:\\Users\\alejo\\Desktop\\ADMProyectos\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\alejo\\Desktop\\ADMProyectos\\Domain\\Domain.csproj"
               }
             }
           }
@@ -154,14 +154,14 @@
         }
       }
     },
-    "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\Domain\\Domain.csproj": {
+    "C:\\Users\\alejo\\Desktop\\ADMProyectos\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\Domain\\Domain.csproj",
+        "projectUniqueName": "C:\\Users\\alejo\\Desktop\\ADMProyectos\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\Domain\\Domain.csproj",
+        "projectPath": "C:\\Users\\alejo\\Desktop\\ADMProyectos\\Domain\\Domain.csproj",
         "packagesPath": "C:\\Users\\alejo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\Domain\\obj\\",
+        "outputPath": "C:\\Users\\alejo\\Desktop\\ADMProyectos\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -219,14 +219,14 @@
         }
       }
     },
-    "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\Infraestructure\\Infrastructure.csproj": {
+    "C:\\Users\\alejo\\Desktop\\ADMProyectos\\Infrastructure\\Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\Infraestructure\\Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\alejo\\Desktop\\ADMProyectos\\Infrastructure\\Infrastructure.csproj",
         "projectName": "Infrastructure",
-        "projectPath": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\Infraestructure\\Infrastructure.csproj",
+        "projectPath": "C:\\Users\\alejo\\Desktop\\ADMProyectos\\Infrastructure\\Infrastructure.csproj",
         "packagesPath": "C:\\Users\\alejo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\Infraestructure\\obj\\",
+        "outputPath": "C:\\Users\\alejo\\Desktop\\ADMProyectos\\Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -247,8 +247,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\Application\\Application.csproj": {
-                "projectPath": "C:\\Users\\alejo\\source\\repos\\ADMProyectos\\Application\\Application.csproj"
+              "C:\\Users\\alejo\\Desktop\\ADMProyectos\\Application\\Application.csproj": {
+                "projectPath": "C:\\Users\\alejo\\Desktop\\ADMProyectos\\Application\\Application.csproj"
               }
             }
           }
@@ -271,31 +271,31 @@
           "dependencies": {
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[9.0.4, )"
+              "version": "[9.0.5, )"
             },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[9.0.4, )"
+              "version": "[9.0.5, )"
             },
             "Microsoft.EntityFrameworkCore.Relational": {
               "target": "Package",
-              "version": "[9.0.4, )"
+              "version": "[9.0.5, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[9.0.4, )"
+              "version": "[9.0.5, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[9.0.4, )"
+              "version": "[9.0.5, )"
             },
             "Microsoft.Extensions.DependencyInjection.Abstractions": {
               "target": "Package",
-              "version": "[9.0.4, )"
+              "version": "[9.0.5, )"
             }
           },
           "imports": [

@@ -45,17 +45,15 @@ namespace Application.Services
             _projectProposalMapper = projectProposalMapper;
         }
         public async Task<ProjectProposalCreateResponseDto> ProcessDecision(Guid projectId, DecisionStepDto request)
-        {
-            var proposal = await _projectProposalQuery.GetProjectById(projectId);
+        {            var proposal = await _projectProposalQuery.GetProjectById(projectId);
             if (proposal == null)
                 throw new BusinessException("Proyecto no encontrado");
 
-            if (proposal.Status != 4)
-                throw new BusinessException("El proyecto solo puede modificarse si está en estado de observación");
+            if (proposal.Status != 1 && proposal.Status != 4)
+                throw new BusinessException("El proyecto solo puede modificarse si está en estado pendiente o en observación");
 
-            var allSteps = await _projectApprovalStepQuery.GetStepsByProjectId(projectId);
-            if (allSteps == null || !allSteps.Any())
-                throw new Exception("No hay pasos de aprobación para este proyecto.");
+            var allSteps = await _projectApprovalStepQuery.GetStepsByProjectId(projectId);            if (allSteps == null || !allSteps.Any())
+                throw new ApprovalStepsGenerationException($"No hay pasos de aprobación para el proyecto {projectId}.");
 
             var currentStep = allSteps.FirstOrDefault(s => s.Id == request.Id);
             if (currentStep == null)
@@ -87,8 +85,7 @@ namespace Application.Services
             var updatedProposal = await UpdateProposalStatus(proposal, currentStep, allSteps);
 
             return await MapToResponseDto(updatedProposal);
-        }
-        private async Task UpdateStepStatus(ProjectApprovalStep step, DecisionStepDto request, List<ProjectApprovalStep> allSteps)
+        }        private async Task UpdateStepStatus(ProjectApprovalStep step, DecisionStepDto request, List<ProjectApprovalStep> allSteps)
         {
             step.Status = request.Status;
             step.Observations = request.Observation;
@@ -96,6 +93,26 @@ namespace Application.Services
             step.ApproverUserId = request.User;
 
             await _projectApprovalStepCommand.UpdateStep(step);
+
+            // Si el paso fue rechazado, actualizar los pasos siguientes
+            if (request.Status == 3) // 3 = Rechazado
+            {
+                await UpdateSubsequentStepsForRejection(step, allSteps);
+            }
+        }
+
+        private async Task UpdateSubsequentStepsForRejection(ProjectApprovalStep rejectedStep, List<ProjectApprovalStep> allSteps)
+        {
+            // Obtener todos los pasos posteriores al paso rechazado que están en estado pendiente
+            var subsequentSteps = allSteps
+                .Where(s => s.StepOrder > rejectedStep.StepOrder && s.Status == 1)
+                .ToList();
+
+            foreach (var step in subsequentSteps)
+            {
+                step.Observations = $"Proyecto rechazado en paso anterior (Paso {rejectedStep.StepOrder}). No requiere revisión.";
+                await _projectApprovalStepCommand.UpdateStep(step);
+            }
         }
         private async Task<ProjectProposal> UpdateProposalStatus(
             ProjectProposal proposal, 
@@ -127,26 +144,26 @@ namespace Application.Services
         private async Task<ProjectProposalCreateResponseDto> MapToResponseDto(ProjectProposal proposal)
         {
             var steps = await _projectApprovalStepQuery.GetStepsByProjectId(proposal.Id);
-            var mappedSteps = new List<StepDto>();
-
-            foreach (var s in steps)
+            var mappedSteps = new List<StepDto>();            foreach (var s in steps)
             {
-                User stepUser = s.User;
+                User? stepUser = s.User;
 
                 if ((stepUser == null || s.User?.Id != s.ApproverUserId) && s.ApproverUserId.HasValue)
                 {
                     stepUser = await _userQuery.GetById(s.ApproverUserId.Value);
-                }
-
-                mappedSteps.Add(new StepDto
+                }                mappedSteps.Add(new StepDto
                 {
-                    Id = s.Id.ToString(),
+                    Id = s.Id,
                     StepOrder = s.StepOrder,
                     DecisionDate = s.DecisionDate,
                     Observations = s.Observations ?? "",
-                    ApproverUser = MapUserToDto(stepUser),
-                    ApproverRole = MapRoleToDto(s.ApproverRole),
-                    Status = MapStatusToDto(s.ApprovalStatus, s.Status)
+                    ApproverUser = MapUserToDto(stepUser) ?? new UserDto { Id = 0, Name = "No asignado", Email = "", Role = new RoleDto { Id = 0, Name = "Sin rol" } },
+                    ApproverRole = MapRoleToDto(s.ApproverRole) ?? new RoleDto { Id = 0, Name = "Sin rol" },
+                    Status = new StatusDto
+                    {
+                        Id = s.ApprovalStatus?.Id ?? s.Status,
+                        Name = s.ApprovalStatus?.Name ?? GetStatusName(s.Status)
+                    }
                 });
             }
 
@@ -156,11 +173,10 @@ namespace Application.Services
                 Title = proposal.Title,
                 Description = proposal.Description,
                 Amount = proposal.EstimatedAmount,
-                Duration = proposal.EstimatedDuration,
-                Area = new AreaDto
+                Duration = proposal.EstimatedDuration,                Area = new AreaDto
                 {
-                    Id = proposal.Area,
-                    Name = proposal.Areas?.Name
+                    Id = proposal.Area ?? 0,
+                    Name = proposal.AreaNavigation?.Name ?? ""
                 },
                 Status = new StatusDto
                 {
@@ -169,10 +185,10 @@ namespace Application.Services
                 },
                 Type = new TypeDto
                 {
-                    Id = proposal.Type,
-                    Name = proposal.ProjectType?.Name
+                    Id = proposal.Type ?? 0,
+                    Name = proposal.ProjectType?.Name ?? ""
                 },
-                User = MapUserToDto(proposal.User),
+                User = MapUserToDto(proposal.User) ?? new UserDto { Id = 0, Name = "Usuario desconocido", Email = "", Role = new RoleDto { Id = 0, Name = "Sin rol" } },
                 Steps = mappedSteps
             };
         }
@@ -183,30 +199,27 @@ namespace Application.Services
             3 => "Rechazado",
             4 => "Observado",
             _ => "Desconocido"
-        };
-        private UserDto MapUserToDto(User user)
+        };        private UserDto? MapUserToDto(User? user)
         {
-            if (user == null) return null;
-
-            return new UserDto
+            if (user == null) return null;            return new UserDto
             {
                 Id = user.Id,
-                Name = user.Name,
-                Email = user.Email,
-                Role = MapRoleToDto(user.ApproverRoles)
+                Name = user.Name ?? "",
+                Email = user.Email ?? "",
+                Role = MapRoleToDto(user.ApproverRole) ?? new RoleDto { Id = 0, Name = "Sin rol" }
             };
         }
-        private RoleDto MapRoleToDto(ApproverRole role)
+        private RoleDto? MapRoleToDto(ApproverRole? role)
         {
             if (role == null) return null;
 
             return new RoleDto
             {
                 Id = role.Id,
-                Name = role.Name
+                Name = role.Name ?? ""
             };
         }
-        private StatusDto MapStatusToDto(ApprovalStatus status, int statusId)
+        private StatusDto MapStatusToDto(ApprovalStatus? status, int statusId)
         {
             if (status != null)
             {
@@ -239,74 +252,99 @@ namespace Application.Services
                 Description = p.Description,
                 Amount = p.EstimatedAmount,
                 Duration = p.EstimatedDuration,
-                Area = p.Areas?.Name ?? "Sin área",
+                Area = p.AreaNavigation?.Name ?? "Sin área",
                 Status = p.ApprovalStatus?.Name ?? GetStatusName(p.Status),
                 Type = p.ProjectType?.Name ?? "Sin tipo"
             }).ToList();
-        }
+        }        
         public async Task<ProjectProposalCreateResponseDto> CreateProject(ProjectProposalRequest request)
+        {
+            return await CreateProject(request, true, true);
+        }
+        private async Task<ProjectProposalCreateResponseDto> CreateProject(
+            ProjectProposalRequest request, 
+            bool generateApprovalSteps, 
+            bool validateDuplicates)
         {
             ValidationUtils.ThrowIfNullOrEmpty(request.Title, "Título");
             ValidationUtils.ThrowIfNullOrEmpty(request.Description, "Descripción");
             ValidationUtils.ThrowIfNegative(request.Amount, "Monto estimado");
             ValidationUtils.ThrowIfOutOfRange(request.Duration, 1, int.MaxValue, "Duración");
 
-            var existingProjects = await _projectProposalQuery.GetProjectsByFilters(request.Title, null, null, null);
-            if (existingProjects.Any(p =>
-                p.Title == request.Title &&
-                p.Status != 3 // 3 = Rechazado
-                ))
+            if (validateDuplicates)
             {
-                throw new BusinessException("Ya existe un proyecto con el mismo título.");
+                var existingProjects = await _projectProposalQuery.GetProjectsByFilters(request.Title, null, null, null);
+                if (existingProjects.Any(p =>
+                    p.Title == request.Title &&
+                    p.Status != 3 // 3 = Rechazado
+                    ))
+                {
+                    throw new BusinessException("Ya existe un proyecto con el mismo título.");
+                }
             }
 
             var user = await _userQuery.GetById(request.User);
             if (user == null)
                 throw new Application.Exceptions.MyInvalidDataException("Usuario no encontrado");
 
-            var proposal = new ProjectProposal
-            {
-                Id = Guid.NewGuid(),
-                Title = request.Title,
-                Description = request.Description,
-                EstimatedAmount = request.Amount,
-                EstimatedDuration = request.Duration,
-                CreateAt = DateTime.UtcNow,
-                Area = request.Area,
-                Type = request.Type,
-                Status = 1, // Pendiente
-                CreateBy = request.User
-            };
-
-            var savedProposal = await _projectProposalCommand.CreateProposal(proposal);
-            if (savedProposal == null)
-                throw new Exception("No se pudo crear el proyecto");
-
+            var transaction = await _projectProposalCommand.BeginTransactionAsync();
+            
             try
             {
-                var approvalSteps = await _projectApprovalStepService.GenerateApprovalSteps(savedProposal.Id);
-                if (!approvalSteps.Any())
-                    throw new Exception("No se pudieron generar los pasos de aprobación");
-
-                var notification = await _projectApprovalStepService.NotifyUsers(savedProposal.Id);
-
-                var firstStep = approvalSteps.OrderBy(s => s.StepOrder).FirstOrDefault();
-                if (firstStep != null)
+                var proposal = new ProjectProposal
                 {
-                    await _projectApprovalStepService.UpdateObservation(
-                        firstStep.Id,
-                        notification.Decision,
-                        notification.UserName);
+                    Id = Guid.NewGuid(),
+                    Title = request.Title,
+                    Description = request.Description,
+                    EstimatedAmount = request.Amount,
+                    EstimatedDuration = request.Duration,
+                    CreatedAt = DateTime.UtcNow,
+                    Area = request.Area,
+                    Type = request.Type,
+                    Status = 1, // Pendiente
+                    CreateBy = request.User
+                };
+
+                var savedProposal = await _projectProposalCommand.CreateProposal(proposal);
+                if (savedProposal == null)
+                    throw new ProjectCreationException(request.Title, "El comando de creación retornó null");                if (generateApprovalSteps)
+                {
+                    var approvalSteps = await _projectApprovalStepService.GenerateApprovalSteps(savedProposal.Id);
+                    if (!approvalSteps.Any())
+                        throw new ApprovalStepsGenerationException("No se pudieron generar los pasos de aprobación para el proyecto " + savedProposal.Id);
+
+                    var notification = await _projectApprovalStepService.NotifyUsers(savedProposal.Id);
+
+                    // Comentando temporalmente la actualización de observaciones
+                    // var firstStep = approvalSteps.OrderBy(s => s.StepOrder).FirstOrDefault();
+                    // if (firstStep != null)
+                    // {
+                    //     await _projectApprovalStepService.UpdateObservation(
+                    //         firstStep.Id,
+                    //         notification.Decision,
+                    //         notification.UserName);
+                    // }
                 }
 
-                var updatedProposal = await _projectProposalQuery.GetProjectById(savedProposal.Id);
+                await transaction.CommitAsync();
 
-                return await MapToResponseDto(updatedProposal);
+                return await MapToResponseDto(savedProposal);
             }
             catch (Exception)
             {
-                await _projectProposalCommand.DeleteProposal(savedProposal.Id);
+                try
+                {
+                    await transaction.RollbackAsync();
+                }
+                catch
+                {
+                    //ignorar errores durante rollback
+                }
                 throw;
+            }
+            finally
+            {
+                transaction?.Dispose();
             }
         }
 
@@ -342,44 +380,56 @@ namespace Application.Services
 
             var updatedProject = await _projectProposalCommand.UpdateProposal(project);
             return await MapToResponseDto(updatedProject);
-        }
+        }        
         public async Task<ProjectProposalResponse> InsertProject(ProjectProposalRequest projectRequest, int userId)
         {
-            var proposal = new ProjectProposal
+            var requestWithUser = new ProjectProposalRequest
             {
-                Id = Guid.NewGuid(),
                 Title = projectRequest.Title,
                 Description = projectRequest.Description,
-                EstimatedAmount = projectRequest.Amount,
-                EstimatedDuration = projectRequest.Duration,
-                CreateAt = DateTime.UtcNow,
+                Amount = projectRequest.Amount,
+                Duration = projectRequest.Duration,
                 Area = projectRequest.Area,
                 Type = projectRequest.Type,
-                Status = 1,
-                CreateBy = userId
+                User = userId
             };
 
-            var savedProposal = await _projectProposalCommand.CreateProposal(proposal);
-            if (savedProposal == null)
-                throw new Exception("Error al crear la propuesta");
+            var result = await CreateProject(requestWithUser, generateApprovalSteps: true, validateDuplicates: false);
+            
+            var proposal = new ProjectProposal
+            {
+                Id = result.Id,
+                Title = result.Title,
+                Description = result.Description,
+                EstimatedAmount = result.Amount,
+                EstimatedDuration = result.Duration,
+                Area = result.Area.Id,
+                Type = result.Type.Id,
+                Status = result.Status.Id,
+                CreateBy = userId,
+                CreatedAt = DateTime.UtcNow,
+                AreaNavigation = new Area { Id = result.Area.Id, Name = result.Area.Name },
+                ProjectType = new ProjectType { Id = result.Type.Id, Name = result.Type.Name },
+                User = new User { Id = userId, Name = result.User.Name, Email = result.User.Email }
+            };
 
-            return await _projectProposalMapper.GetProjectProposalResponse(savedProposal);
+            return await _projectProposalMapper.GetProjectProposalResponse(proposal);
         }
         public async Task<ProjectStatusResponse> GetProjectStatus(Guid projectId)
         {
             var project = await _projectProposalQuery.GetProjectById(projectId);
             if (project == null)
-                throw new Exception("Proyecto no encontrado");
+                throw new ProjectNotFoundException($"No se encontró el proyecto con ID {projectId}");
 
             return new ProjectStatusResponse
             {
                 ProjectId = project.Id,
                 Title = project.Title,
                 Description = project.Description,
-                Area = project.Areas?.Name ?? "Sin área",
+                Area = project.AreaNavigation?.Name ?? "Sin área",
                 Type = project.ProjectType?.Name ?? "Sin tipo",
                 CurrentStatus = GetStatusName(project.Status),
-                CreatedAt = project.CreateAt,
+                CreatedAt = project.CreatedAt,
                 CreatedBy = project.User?.Name ?? "Usuario desconocido",
                 History = await GetProjectHistory(project)
             };
@@ -418,12 +468,11 @@ namespace Application.Services
         public async Task<int> GetTotalProjectCount()
         {
             return await _projectProposalQuery.GetTotalProjectCount();
-        }
-        public async Task<ProjectProposalCreateResponseDto> GetProjectDetail(Guid projectId)
+        }        public async Task<ProjectProposalCreateResponseDto> GetProjectDetail(Guid projectId)
         {
             var project = await _projectProposalQuery.GetProjectById(projectId);
             if (project == null)
-                throw new Exception("Proyecto no encontrado");
+                throw new ProjectNotFoundException($"No se encontró el proyecto con ID {projectId}");
 
             return await MapToResponseDto(project);
         }

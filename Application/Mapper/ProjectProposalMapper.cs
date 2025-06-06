@@ -29,8 +29,8 @@ namespace Application.Mapper
         }
         public async Task<ProjectProposalResponse> GetProjectProposalResponse(ProjectProposal project)
         {
-            var area = await _areaQuery.GetById(project.Area);
-            var type = await _projectTypeQuery.GetById(project.Type);
+            var area = await _areaQuery.GetById(project.Area ?? 0);
+            var type = await _projectTypeQuery.GetById(project.Type ?? 0);
             var user = await _userQuery.GetById(project.CreateBy);
             var userRole = user != null ? await _userRoleService.GetRoleById(user.Id) : 0;
 
@@ -41,9 +41,9 @@ namespace Application.Mapper
                 Description = project.Description,
                 EstimatedAmount = project.EstimatedAmount,
                 EstimatedDuration = project.EstimatedDuration,
-                Area = project.Area,
+                Area = project.Area ?? 0,
                 AreaName = area?.Name,
-                Type = project.Type,
+                Type = project.Type ?? 0,
                 TypeName = type?.Name,
                 Status = project.ApprovalStatus?.Id ?? project.Status,
                 StatusName = project.ApprovalStatus?.Name,
@@ -51,7 +51,7 @@ namespace Application.Mapper
                 UserName = user?.Name,
                 UserEmail = user?.Email,
                 UserRoleId = userRole,
-                UserRoleName = project.User.ApproverRoles?.Name,
+                UserRoleName = project.User.ApproverRole?.Name,
                 Steps = project.ProjectApprovalSteps?.Select(s =>
                     new ProjectApprovalStep
                     {
@@ -85,7 +85,7 @@ namespace Application.Mapper
 
                 mappedSteps.Add(new StepDto
                 {
-                    Id = step.Id.ToString(),
+                    Id = step.Id,
                     StepOrder = step.StepOrder,
                     DecisionDate = step.DecisionDate,
                     Observations = step.Observations ?? "",
@@ -103,8 +103,8 @@ namespace Application.Mapper
                 });
             }
 
-            var area = await _areaQuery.GetById(proposal.Area);
-            var type = await _projectTypeQuery.GetById(proposal.Type);
+            var area = await _areaQuery.GetById(proposal.Area ?? 0);
+            var type = await _projectTypeQuery.GetById(proposal.Type ?? 0);
 
             return new ProjectProposalCreateResponseDto
             {
@@ -115,7 +115,7 @@ namespace Application.Mapper
                 Duration = proposal.EstimatedDuration,
                 Area = new AreaDto
                 {
-                    Id = proposal.Area,
+                    Id = proposal.Area ?? 0,
                     Name = area?.Name ?? "Sin área"
                 },
                 Status = new StatusDto
@@ -125,7 +125,7 @@ namespace Application.Mapper
                 },
                 Type = new TypeDto
                 {
-                    Id = proposal.Type,
+                    Id = proposal.Type ?? 0,
                     Name = type?.Name ?? "Sin tipo"
                 },
                 User = MapUserToDto(proposal.User),
@@ -144,7 +144,7 @@ namespace Application.Mapper
                 Role = new RoleDto
                 {
                     Id = user.Role,
-                    Name = user.ApproverRoles?.Name ?? "Sin rol"
+                    Name = user.ApproverRole?.Name ?? "Sin rol"
                 }
             };
         }

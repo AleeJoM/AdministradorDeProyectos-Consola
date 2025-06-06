@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ADMProyectos")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a8891714c8c49cb4a456529ad72a78e6d0f6aa16")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+69b576a09693e3ae0a8bd04b3e48cedc6f122daf")]
 [assembly: System.Reflection.AssemblyProductAttribute("ADMProyectos")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ADMProyectos")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

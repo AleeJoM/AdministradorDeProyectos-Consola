@@ -40,9 +40,7 @@ IServiceProvider ConfigureServices(AppDbContext dbContext)
     services.AddSingleton<IProjectProposalCommand, ProjectProposalCommand>();
     services.AddSingleton<IProjectApprovalStepCommand, ProjectApprovalStepCommand>();
 
-    services.AddSingleton<IProjectProposalMapper, ProjectProposalMapper>();
-
-    services.AddSingleton<IUserRoleService, UserRoleService>();
+    services.AddSingleton<IProjectProposalMapper, ProjectProposalMapper>();    services.AddSingleton<IUserRoleService, UserRoleService>();
     services.AddSingleton<IProjectApprovalStepService, ProjectApprovalStepService>();
     services.AddSingleton<IProjectProposalService, ProjectProposalService>();
 

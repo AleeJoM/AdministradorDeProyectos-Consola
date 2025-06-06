@@ -54,8 +54,8 @@ namespace ADMProyectos.API.Controllers
         {
             var users = await _userQuery.GetAllUsers();
             var roles = users
-                .Where(u => u.ApproverRoles != null)
-                .Select(u => u.ApproverRoles)
+                .Where(u => u.ApproverRole != null)
+                .Select(u => u.ApproverRole)
                 .Distinct()
                 .Select(r => new { id = r.Id, name = r.Name });
             return Ok(roles);
